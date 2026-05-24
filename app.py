@@ -340,6 +340,46 @@ def update_state(request):
     return Response(json.dumps(response_data), 200, "application/json")
 
 
+@app.route("/manifest.json", methods=["GET"])
+def manifest(request):
+    """Serves the PWA manifest metadata file."""
+    try:
+        with open("manifest.json", "r", encoding="utf-8") as f:
+            return Response(f.read(), 200, "application/json")
+    except Exception as e:
+        return Response(f"Error: {str(e)}", 500, "text/plain")
+
+
+@app.route("/service-worker.js", methods=["GET"])
+def service_worker(request):
+    """Serves the service worker caching script."""
+    try:
+        with open("service-worker.js", "r", encoding="utf-8") as f:
+            return Response(f.read(), 200, "application/javascript")
+    except Exception as e:
+        return Response(f"Error: {str(e)}", 500, "text/plain")
+
+
+@app.route("/icons/icon-192.png", methods=["GET"])
+def icon_192(request):
+    """Serves the 192x192 app launcher icon."""
+    try:
+        with open("icons/icon-192.png", "rb") as f:
+            return Response(f.read(), 200, "image/png")
+    except Exception as e:
+        return Response(f"Error: {str(e)}", 500, "text/plain")
+
+
+@app.route("/icons/icon-512.png", methods=["GET"])
+def icon_512(request):
+    """Serves the 512x512 app launcher icon."""
+    try:
+        with open("icons/icon-512.png", "rb") as f:
+            return Response(f.read(), 200, "image/png")
+    except Exception as e:
+        return Response(f"Error: {str(e)}", 500, "text/plain")
+
+
 if __name__ == "__main__":
     # Start server locally
     app.run(host="127.0.0.1", port=8000)

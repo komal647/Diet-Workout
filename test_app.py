@@ -135,6 +135,55 @@ def run_test_suite():
     assert weekly["total_burned"] == 255, "Weekly burned sum mismatch." # 200 on Mon + 55 on Wed = 255
     print("[OK] Weekly performance aggregation verified!")
 
+    # -------------------------------------------------------------
+    # 6. Test PWA Endpoints
+    # -------------------------------------------------------------
+    print("\nTest 6: Verifying PWA static assets routes...")
+    
+    # Check manifest.json
+    environ_manifest = {
+        "REQUEST_METHOD": "GET",
+        "PATH_INFO": "/manifest.json",
+        "QUERY_STRING": "",
+        "wsgi.input": sys.stdin,
+        "CONTENT_LENGTH": "0"
+    }
+    mock_start_response.status = None
+    response_manifest = app(environ_manifest, mock_start_response)
+    assert mock_start_response.status == "200 OK", "manifest.json failed to serve."
+    manifest_data = json.loads(response_manifest[0].decode("utf-8"))
+    assert manifest_data["short_name"] == "AntiGravity Fit", "manifest.json metadata short_name mismatch."
+    print("  manifest.json: 200 OK & Verified Metadata!")
+    
+    # Check service-worker.js
+    environ_sw = {
+        "REQUEST_METHOD": "GET",
+        "PATH_INFO": "/service-worker.js",
+        "QUERY_STRING": "",
+        "wsgi.input": sys.stdin,
+        "CONTENT_LENGTH": "0"
+    }
+    mock_start_response.status = None
+    response_sw = app(environ_sw, mock_start_response)
+    assert mock_start_response.status == "200 OK", "service-worker.js failed to serve."
+    assert b"CACHE_NAME = \"antigravity-fit-v1\"" in response_sw[0], "service-worker.js content mismatch."
+    print("  service-worker.js: 200 OK & Verified Script!")
+    
+    # Check launcher icon-192
+    environ_icon = {
+        "REQUEST_METHOD": "GET",
+        "PATH_INFO": "/icons/icon-192.png",
+        "QUERY_STRING": "",
+        "wsgi.input": sys.stdin,
+        "CONTENT_LENGTH": "0"
+    }
+    mock_start_response.status = None
+    response_icon = app(environ_icon, mock_start_response)
+    assert mock_start_response.status == "200 OK", "icon-192.png failed to serve."
+    print("  icon-192.png: 200 OK & Image Verified!")
+    
+    print("[OK] PWA static assets routing verified successfully!")
+
     print("\n" + "=" * 60)
     print("ALL EXTENDED SUITE CASES PASSED SUCCESSFULLY!")
     print("=" * 60)
