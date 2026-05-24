@@ -728,6 +728,13 @@
             display: block; /* Show all side-by-side in desktop viewports */
         }
 
+        @media (max-width: 1024px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr !important;
+                gap: 20px;
+            }
+        }
+
         @media (max-width: 768px) {
             body {
                 padding-bottom: 90px;
@@ -748,6 +755,79 @@
             
             .mobile-panel.active {
                 display: block;
+            }
+            
+            .container {
+                padding: 0 16px;
+            }
+        }
+
+        @media (max-width: 580px) {
+            .metrics-banner {
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 10px;
+                margin-bottom: 16px;
+            }
+            .metric-card {
+                padding: 12px 10px;
+            }
+            .metric-value {
+                font-size: 1.35rem;
+            }
+            .metric-label {
+                font-size: 0.65rem;
+                letter-spacing: 0.2px;
+            }
+            .metric-subtext {
+                font-size: 0.65rem;
+                margin-top: 4px;
+            }
+            .progress-container {
+                margin-top: 6px;
+            }
+            .weekly-calendar-bar {
+                padding: 8px 6px;
+                gap: 4px;
+                margin: 16px 0;
+            }
+            .day-btn {
+                padding: 6px 2px;
+                border-radius: 6px;
+                gap: 4px;
+            }
+            .day-name {
+                font-size: 0.65rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 10px;
+            }
+            .panel {
+                padding: 16px 12px;
+            }
+            .ingredient-adjuster-row {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 8px;
+                padding: 8px;
+            }
+            .ing-controls {
+                justify-content: space-between;
+                width: 100%;
+                border-top: 1px dashed var(--border-color);
+                padding-top: 6px;
+                gap: 8px;
+            }
+            .ing-macro-preview {
+                text-align: left;
+                min-width: unset;
+                flex-grow: 1;
+            }
+            .weekly-report-grid {
+                grid-template-columns: 1fr;
+                gap: 10px;
             }
         }
     </style>
