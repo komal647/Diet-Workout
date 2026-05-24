@@ -41,16 +41,17 @@ INGREDIENTS = {
     "chicken_curry": {"name": "Chicken Curry (150g cooked)", "calories": 280, "protein": 35, "unit": "serving"},
     "grilled_fish": {"name": "Grilled Fish Fillet (150g)", "calories": 180, "protein": 30, "unit": "serving"},
     "egg_whites": {"name": "4 Egg Whites", "calories": 70, "protein": 16, "unit": "serving"},
-    "boiled_eggs": {"name": "2 Boiled Eggs", "calories": 150, "protein": 12, "unit": "serving"}
+    "boiled_eggs": {"name": "2 Boiled Eggs", "calories": 150, "protein": 12, "unit": "serving"},
+    "white_rice": {"name": "White Rice (Cooked)", "calories": 130, "protein": 2.5, "unit": "100g"}
 }
 
 # Mapping of meal categories to valid components for targeted custom selections
 MEAL_INGREDIENTS = {
     "breakfast": ["egg", "toast", "milk", "paneer", "roti", "whey", "oats", "boiled_eggs", "egg_whites", "high_protein_lassi", "sattu_shake"],
     "mid_workout": ["banana", "almonds", "whey", "milk", "high_protein_lassi"],
-    "lunch": ["paneer", "dal", "roti", "chicken", "rice", "curd", "soya_bhurji", "low_fat_paneer", "kala_chana", "rajma_lobia", "grilled_chicken_breast", "chicken_curry", "grilled_fish"],
+    "lunch": ["paneer", "dal", "roti", "chicken", "rice", "white_rice", "curd", "soya_bhurji", "low_fat_paneer", "kala_chana", "rajma_lobia", "grilled_chicken_breast", "chicken_curry", "grilled_fish"],
     "snack": ["whey", "curd", "soya", "sprouts", "almonds", "soya_salad", "high_protein_lassi", "sattu_shake", "moong_sprouts", "egg_whites", "boiled_eggs"],
-    "dinner": ["chicken", "rice", "paneer", "roti", "dal", "curd", "soya_bhurji", "low_fat_paneer", "kala_chana", "rajma_lobia", "grilled_chicken_breast", "chicken_curry", "grilled_fish"]
+    "dinner": ["chicken", "rice", "white_rice", "paneer", "roti", "dal", "curd", "soya_bhurji", "low_fat_paneer", "kala_chana", "rajma_lobia", "grilled_chicken_breast", "chicken_curry", "grilled_fish"]
 }
 
 # 10kg Dumbbell and Bodyweight Hypertrophy routines split into targeted days
