@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AntiGravity | Elite Home Fitness Tracker</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-base: #0f141c;
+            --bg-card: #161f2a;
+            --bg-header: #1a252f;
+            --bg-hover: #202d3e;
+            
+            --color-green: #27ae60;
+            --color-green-light: #2ecc71;
+            --color-green-glow: rgba(39, 174, 96, 0.25);
+            
+            --color-crimson: #e74c3c;
+            --color-crimson-light: #ff7675;
+            --color-crimson-glow: rgba(231, 76, 60, 0.25);
+            
+            --color-blue: #3498db;
+            --color-blue-light: #54a0ff;
+            --color-blue-glow: rgba(52, 152, 219, 0.25);
+            
+            --text-main: #f5f7fa;
+            --text-muted: #a4b0be;
+            --text-sub: #747d8c;
+            
+            --border-color: #253342;
+            --border-radius: 14px;
+            
+            --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            --font-display: 'Outfit', sans-serif;
+            --font-body: 'Inter', sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            min-height: 100vh;
+            padding-bottom: 60px;
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 1240px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Style */
+        header {
+            background-color: var(--bg-header);
+            border-bottom: 1px solid var(--border-color);
+            padding: 16px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(12px);
+            background-color: rgba(26, 37, 47, 0.95);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            background-color: var(--color-green);
+            padding: 8px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 15px var(--color-green-glow);
+        }
+
+        .logo-icon svg {
+            fill: #fff;
+            width: 24px;
+            height: 24px;
+        }
+
+        .logo-text {
+            font-family: var(--font-display);
+            font-size: 1.4rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            color: #fff;
+        }
+
+        .logo-tagline {
+            font-size: 0.7rem;
+            color: var(--color-green);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: -3px;
+        }
+
+        .user-badge {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 6px 14px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .user-avatar {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: var(--color-green);
+            box-shadow: 0 0 8px var(--color-green-glow);
+        }
+
+        /* Weekly Navigator Calendar bar */
+        .weekly-calendar-bar {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 12px;
+            margin: 20px 0;
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+        }
+
+        .day-btn {
+            background: none;
+            border: 1px solid transparent;
+            color: var(--text-muted);
+            padding: 10px 6px;
+            border-radius: 10px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            transition: var(--transition);
+        }
+
+        .day-btn:hover {
+            background-color: var(--bg-hover);
+            color: #fff;
+        }
+
+        .day-btn.active {
+            background-color: var(--color-blue);
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+        }
+
+        .day-name {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .day-status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background-color: transparent;
+        }
+
+        .day-btn.has-workout .day-status-dot {
+            background-color: var(--color-green-light);
+            box-shadow: 0 0 6px var(--color-green-glow);
+        }
+
+        /* Banner & Metrics Dashboard */
+        .metrics-banner {
+            margin-bottom: 25px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+        }
+
+        .metric-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 18px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: var(--transition);
+        }
+
+        .metric-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+        }
+
+        .metric-goal::before { background-color: var(--color-blue); }
+        .metric-consumed::before { background-color: var(--color-green); }
+        .metric-remaining::before { background-color: var(--color-crimson); }
+        .metric-protein::before { background-color: var(--color-green); }
+
+        .metric-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .metric-value {
+            font-family: var(--font-display);
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .metric-subtext {
+            font-size: 0.7rem;
+            color: var(--text-sub);
+            margin-top: 8px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* Progress Bars */
+        .progress-container {
+            width: 100%;
+            height: 5px;
+            background-color: var(--bg-base);
+            border-radius: 3px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            transition: width 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .progress-green {
+            background: linear-gradient(90deg, var(--color-green), var(--color-green-light));
+        }
+
+        .progress-blue {
+            background: linear-gradient(90deg, var(--color-blue), var(--color-blue-light));
+        }
+
+        /* Layout Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1.6fr 1fr;
+            gap: 25px;
+        }
+
+        @media (max-width: 950px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Panels general */
+        .panel {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+
+        .panel-title {
+            font-family: var(--font-display);
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+
+        .panel-title svg {
+            width: 18px;
+            height: 18px;
+            fill: var(--color-green);
+        }
+
+        /* Meal Plate Builder Custom list */
+        .meal-builder-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .meal-builder-card {
+            background-color: rgba(22, 31, 42, 0.5);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+        }
+
+        .meal-builder-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            border-bottom: 1px dashed var(--border-color);
+            padding-bottom: 8px;
+        }
+
+        .meal-builder-title {
+            font-family: var(--font-display);
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text-main);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .meal-builder-subtotal {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--color-green-light);
+            background-color: var(--color-green-glow);
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        .meal-ingredients-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .ingredient-adjuster-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            background-color: var(--bg-base);
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .ing-label-container {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .ing-name {
+            font-weight: 500;
+            color: var(--text-main);
+        }
+
+        .ing-sub {
+            font-size: 0.7rem;
+            color: var(--text-sub);
+        }
+
+        .ing-controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .ing-macro-preview {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            min-width: 100px;
+            text-align: right;
+        }
+
+        .btn-qty {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            width: 24px;
+            height: 24px;
+            border-radius: 4px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .btn-qty:hover {
+            border-color: var(--color-green);
+            background-color: var(--color-green-glow);
+        }
+
+        .qty-val {
+            font-weight: 600;
+            min-width: 32px;
+            text-align: center;
+            font-family: var(--font-display);
+        }
+
+        /* Exercise Module */
+        .exercise-tab-nav {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 16px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+
+        .tab-btn {
+            background: none;
+            border: 1px solid transparent;
+            color: var(--text-muted);
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .tab-btn:hover {
+            color: var(--text-main);
+            background-color: var(--bg-hover);
+        }
+
+        .tab-btn.active {
+            color: var(--color-green);
+            background-color: var(--color-green-glow);
+            border-color: rgba(39, 174, 96, 0.2);
+        }
+
+        .exercise-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .exercise-item {
+            background-color: var(--bg-base);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: var(--transition);
+        }
+
+        .exercise-item:hover {
+            border-color: var(--bg-hover);
+            transform: translateX(2px);
+        }
+
+        .exercise-info {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+
+        .exercise-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+
+        .exercise-meta {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            font-size: 0.7rem;
+            color: var(--text-sub);
+        }
+
+        .exercise-muscle-tag {
+            background-color: var(--bg-card);
+            padding: 1px 5px;
+            border-radius: 3px;
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+        }
+
+        .exercise-burn {
+            color: var(--color-crimson-light);
+            font-weight: 600;
+        }
+
+        /* Checkbox Styling */
+        .checkbox-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .exercise-checkbox {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--border-color);
+            border-radius: 5px;
+            outline: none;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .exercise-checkbox:hover {
+            border-color: var(--color-green);
+            background-color: var(--color-green-glow);
+        }
+
+        .exercise-checkbox:checked {
+            background-color: var(--color-green);
+            border-color: var(--color-green);
+        }
+
+        .exercise-checkbox:checked::after {
+            content: '';
+            width: 8px;
+            height: 4px;
+            border-left: 2px solid white;
+            border-bottom: 2px solid white;
+            transform: rotate(-45deg) translate(0.5px, -1px);
+        }
+
+        .exercise-item.completed {
+            opacity: 0.55;
+            border-color: rgba(39, 174, 96, 0.15);
+            background-color: rgba(39, 174, 96, 0.01);
+        }
+
+        .exercise-item.completed .exercise-name {
+            text-decoration: line-through;
+            color: var(--text-sub);
+        }
+
+        /* Weekly Summary card styling */
+        .weekly-report-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 18px;
+            margin-top: 20px;
+        }
+
+        .weekly-report-title {
+            font-family: var(--font-display);
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text-main);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 8px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .weekly-report-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .weekly-report-item {
+            background-color: var(--bg-base);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 10px;
+        }
+
+        .report-label {
+            font-size: 0.65rem;
+            color: var(--text-sub);
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .report-val {
+            font-family: var(--font-display);
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-top: 2px;
+        }
+
+        .report-active-protein { color: var(--color-green-light); }
+        .report-deficit { color: var(--color-blue-light); }
+
+        /* Notification Alert */
+        .notification-toast {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background-color: var(--bg-card);
+            border: 1px solid var(--color-green);
+            border-left: 5px solid var(--color-green);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            border-radius: 8px;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transform: translateY(150%);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.2);
+            z-index: 1000;
+        }
+
+        .notification-toast.show {
+            transform: translateY(0);
+        }
+
+        .notification-toast svg {
+            width: 18px;
+            height: 18px;
+            fill: var(--color-green);
+        }
+
+        .notification-content {
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Panel -->
+    <header>
+        <div class="container header-content">
+            <div class="logo-section">
+                <div class="logo-icon">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M20.57 14.86L22 13.43l-1.43-1.43-.72.72-2.85-2.85.71-.71-1.43-1.43-1.43 1.43-2.14-2.14 1.43-1.43-1.43-1.43-1.43 1.43-2.85-2.85.71-.72L7.71 2 6.29 3.43l1.43 1.43.71-.71 2.85 2.85-.71.71 1.43 1.43 1.43-1.43 2.14 2.14-1.43 1.43 1.43 1.43 1.43-1.43 2.85 2.85-.72.71 1.43 1.43.72-.71 2.85 2.85-.71.71 1.43 1.43 1.43-1.43zm-7.85-4.28l.71-.71.71.71-.71.71-.71-.71z"/>
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="logo-text">ANTIGRAVITY FIT</h1>
+                    <div class="logo-tagline">10kg DB & Weekly Tracker</div>
+                </div>
+            </div>
+            <div class="user-badge">
+                <div class="user-avatar"></div>
+                <span>62kg Athlete Planner</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        
+        <!-- Weekly Navigator Calendar Bar -->
+        <section class="weekly-calendar-bar" id="weekly-navbar">
+            <!-- Populated dynamically via JS -->
+        </section>
+
+        <!-- Target Dashboard Banner -->
+        <section class="metrics-banner">
+            <!-- Calorie Goal Card -->
+            <div class="metric-card metric-goal">
+                <div>
+                    <div class="metric-label">Daily Calorie Target</div>
+                    <div class="metric-value" id="calorie-goal">2,300</div>
+                </div>
+                <div class="metric-subtext">
+                    <span>Active profile target</span>
+                    <span>kcal</span>
+                </div>
+            </div>
+
+            <!-- Calories Consumed Card -->
+            <div class="metric-card metric-consumed">
+                <div>
+                    <div class="metric-label">Consumed</div>
+                    <div class="metric-value" id="calorie-consumed">0</div>
+                </div>
+                <div class="progress-container">
+                    <div class="progress-bar progress-green" id="calorie-progress-bar"></div>
+                </div>
+                <div class="metric-subtext">
+                    <span id="calorie-progress-text">0% reached</span>
+                    <span>kcal</span>
+                </div>
+            </div>
+
+            <!-- Remaining Calories Card -->
+            <div class="metric-card metric-remaining">
+                <div>
+                    <div class="metric-label">Remaining Pool</div>
+                    <div class="metric-value" id="calorie-remaining">2,300</div>
+                </div>
+                <div class="metric-subtext">
+                    <span id="remaining-sub-status">Calorie balance</span>
+                    <span id="burned-kcal-text">0 kcal burned</span>
+                </div>
+            </div>
+
+            <!-- Target Protein Card -->
+            <div class="metric-card metric-protein">
+                <div>
+                    <div class="metric-label">Protein Target</div>
+                    <div class="metric-value" id="protein-consumed">0 / 120g</div>
+                </div>
+                <div class="progress-container">
+                    <div class="progress-bar progress-blue" id="protein-progress-bar"></div>
+                </div>
+                <div class="metric-subtext">
+                    <span id="protein-progress-text">0% reached</span>
+                    <span>grams</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Dashboard Split -->
+        <main class="dashboard-grid">
+            
+            <!-- Left Side: Interactive Diet Custom Plate Builder -->
+            <section class="panel">
+                <h2 class="panel-title">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.53c-.26-.81-1-1.4-1.9-1.4h-1v-3c0-.55-.45-1-1-1h-6v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.4z"/></svg>
+                    Granular Plate Builder (Selective Ingredients)
+                </h2>
+                
+                <div class="meal-builder-list" id="meal-builder-container">
+                    <!-- Populated dynamically via JavaScript -->
+                </div>
+            </section>
+
+            <!-- Right Side: Home Training Splits & Weekly Stats -->
+            <div>
+                <!-- Dumbbell Hypertrophy Panel -->
+                <section class="panel">
+                    <h2 class="panel-title">
+                        <svg viewBox="0 0 24 24"><path d="M20.57 14.86L22 13.43l-1.43-1.43-.72.72-2.85-2.85.71-.71-1.43-1.43-1.43 1.43-2.14-2.14 1.43-1.43 1.43-1.43 1.43-1.43 2.85 2.85-.71.72L7.71 2 6.29 3.43l1.43 1.43.71-.71 2.85 2.85-.71.71 1.43 1.43 1.43-1.43 2.14 2.14-1.43 1.43 1.43 1.43 1.43-1.43 2.85 2.85-.72.71 1.43 1.43.72-.71 2.85 2.85-.71.71 1.43 1.43 1.43-1.43z"/></svg>
+                        10kg DB & Bodyweight Home Splits
+                    </h2>
+
+                    <!-- Exercise split tab navigations -->
+                    <div class="exercise-tab-nav">
+                        <button class="tab-btn active" onclick="switchDay('push')">Push Day</button>
+                        <button class="tab-btn" onclick="switchDay('pull')">Pull Day</button>
+                        <button class="tab-btn" onclick="switchDay('legs')">Legs Day</button>
+                    </div>
+
+                    <!-- Exercise List -->
+                    <div class="exercise-list" id="exercise-list-body">
+                        <!-- Populated dynamically via JavaScript -->
+                    </div>
+                </section>
+
+                <!-- Weekly Summary Report Panel -->
+                <section class="weekly-report-card">
+                    <h3 class="weekly-report-title">
+                        <svg viewBox="0 0 24 24"><path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm2 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+                        Weekly Performance Report
+                    </h3>
+                    <div class="weekly-report-grid">
+                        <div class="weekly-report-item">
+                            <div class="report-label">Consistency</div>
+                            <div class="report-val" id="weekly-consistency">0 / 7 Days</div>
+                        </div>
+                        <div class="weekly-report-item">
+                            <div class="report-label">Protein Avg</div>
+                            <div class="report-val report-active-protein" id="weekly-avg-protein">0g / Day</div>
+                        </div>
+                        <div class="weekly-report-item">
+                            <div class="report-label">Calories Consumed</div>
+                            <div class="report-val" id="weekly-calories-consumed">0 kcal</div>
+                        </div>
+                        <div class="weekly-report-item">
+                            <div class="report-label">Total Burned</div>
+                            <div class="report-val report-deficit" id="weekly-calories-burned">0 kcal</div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Notification Toast -->
+    <div class="notification-toast" id="toast">
+        <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+        <div class="notification-content" id="toast-message">Quantity adjusted!</div>
+    </div>
+
+    <!-- Embedded Initial Context Data -->
+    <script id="initial-data" type="application/json">
+        {{ INITIAL_DATA }}
+    </script>
+
+    <script>
+        // Parse the initial configuration injected from the AntiGravity backend
+        const serverData = JSON.parse(document.getElementById('initial-data').textContent);
+        const ingredientsDb = serverData.ingredients;
+        const mealIngredientsDb = serverData.meal_ingredients;
+        const exercisesDb = serverData.exercises;
+        
+        // Active state managed client-side and synced via async endpoints
+        let userState = serverData.state;
+        let activeTab = 'push'; // Default hypertrophy workout day split tab
+
+        const weekdays = {
+            "monday": "Mon",
+            "tuesday": "Tue",
+            "wednesday": "Wed",
+            "thursday": "Thu",
+            "friday": "Fri",
+            "saturday": "Sat",
+            "sunday": "Sun"
+        };
+
+        // Show toast notification
+        function showNotification(message) {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toast-message');
+            toastMsg.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2500);
+        }
+
+        // Send active modifications to Python API server
+        async function syncStateWithServer(payload) {
+            try {
+                const response = await fetch('/api/update_state', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                });
+                
+                if (response.ok) {
+                    const result = await response.json();
+                    userState = result.state;
+                    updateUI(result.totals, result.weekly);
+                } else {
+                    console.error("Sync failed:", response.statusText);
+                }
+            } catch (err) {
+                console.error("Error communicating with server:", err);
+            }
+        }
+
+        // Handles switching active tracker day of the week
+        function changeActiveDay(day) {
+            syncStateWithServer({
+                type: 'change_day',
+                day: day
+            });
+            showNotification(`Switched active day to ${weekdays[day]}`);
+        }
+
+        // Increment or decrement specific food item values
+        function adjustQty(category, ingredientId, action) {
+            // Trigger server state modification
+            syncStateWithServer({
+                type: 'food_qty',
+                category: category,
+                ingredient_id: ingredientId,
+                action: action
+            });
+        }
+
+        // Handles exercise completion toggle states
+        function handleExerciseToggle(exerciseId, checkbox) {
+            const isCompleted = checkbox.checked;
+            const itemElement = document.getElementById(`exercise-item-${exerciseId}`);
+            
+            if (isCompleted) {
+                itemElement.classList.add('completed');
+            } else {
+                itemElement.classList.remove('completed');
+            }
+
+            syncStateWithServer({
+                type: 'exercise_completion',
+                exercise_id: exerciseId,
+                completed: isCompleted
+            });
+        }
+
+        // Tab Navigator controller for home dumbbell exercises
+        function switchDay(day) {
+            activeTab = day;
+            const navButtons = document.querySelectorAll('.exercise-tab-nav .tab-btn');
+            navButtons.forEach(btn => {
+                if (btn.textContent.toLowerCase().includes(day)) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+            renderExerciseList();
+        }
+
+        // Redraw dynamic values, calendars and reports
+        function updateUI(totals, weekly) {
+            const activeDay = userState.active_day;
+            
+            // 1. Redraw Weekly Navigation bar highlights and status dots
+            const navbar = document.getElementById('weekly-navbar');
+            navbar.innerHTML = '';
+            
+            for (const day in weekdays) {
+                const isActive = day === activeDay ? 'active' : '';
+                const hasWorkout = weekly.daily_status[day].has_workout ? 'has-workout' : '';
+                
+                navbar.innerHTML += `
+                    <button class="day-btn ${isActive} ${hasWorkout}" onclick="changeActiveDay('${day}')">
+                        <span class="day-name">${weekdays[day]}</span>
+                        <div class="day-status-dot"></div>
+                    </button>
+                `;
+            }
+
+            // 2. Update Dashboard banner
+            document.getElementById('calorie-goal').textContent = totals.calorie_goal.toLocaleString();
+            document.getElementById('calorie-consumed').textContent = totals.consumed_calories.toLocaleString();
+            
+            const remainingVal = totals.remaining_calories;
+            const remainingEl = document.getElementById('calorie-remaining');
+            remainingEl.textContent = remainingVal.toLocaleString();
+            
+            const remainingCard = remainingEl.closest('.metric-card');
+            const statusEl = document.getElementById('remaining-sub-status');
+            
+            if (remainingVal < 0) {
+                remainingCard.style.borderColor = 'var(--color-crimson)';
+                remainingEl.style.color = 'var(--color-crimson-light)';
+                statusEl.textContent = "Exceeded daily pool";
+                statusEl.style.color = 'var(--color-crimson-light)';
+            } else {
+                remainingCard.style.borderColor = 'var(--border-color)';
+                remainingEl.style.color = 'var(--text-main)';
+                statusEl.textContent = "Calorie balance";
+                statusEl.style.color = 'var(--text-sub)';
+            }
+
+            // Daily Progress Metrics
+            document.getElementById('calorie-progress-bar').style.width = `${totals.calorie_progress_pct}%`;
+            document.getElementById('calorie-progress-text').textContent = `${totals.calorie_progress_pct}% reached`;
+            
+            document.getElementById('protein-consumed').textContent = `${totals.consumed_protein} / ${totals.protein_goal}g`;
+            document.getElementById('protein-progress-bar').style.width = `${totals.protein_progress_pct}%`;
+            document.getElementById('protein-progress-text').textContent = `${totals.protein_progress_pct}% reached`;
+
+            document.getElementById('burned-kcal-text').textContent = `${totals.burned_calories} kcal burned`;
+
+            // 3. Redraw Weekly Cumulative Reports
+            document.getElementById('weekly-consistency').textContent = `${weekly.active_training_days} / 7 Days`;
+            document.getElementById('weekly-avg-protein').textContent = `${weekly.avg_daily_protein}g / Day`;
+            document.getElementById('weekly-calories-consumed').textContent = `${weekly.total_consumed.toLocaleString()} kcal`;
+            document.getElementById('weekly-calories-burned').textContent = `${weekly.total_burned.toLocaleString()} kcal`;
+
+            // 4. Redraw Meals Plate Builder List
+            renderMealPlateBuilder();
+            
+            // 5. Redraw Exercise Completions
+            renderExerciseList();
+        }
+
+        // Render food ingredient custom selectors list
+        function renderMealPlateBuilder() {
+            const activeDay = userState.active_day;
+            const activeMeals = userState.weekly_data[activeDay].meals;
+            const container = document.getElementById('meal-builder-container');
+            container.innerHTML = '';
+            
+            for (const category in mealIngredientsDb) {
+                const allowedIngredients = mealIngredientsDb[category];
+                const activeSelections = activeMeals[category] || {};
+                
+                let mealCal = 0;
+                let mealProt = 0;
+                
+                // Pre-compute subtotals
+                for (const ingId in activeSelections) {
+                    const qty = activeSelections[ingId];
+                    const ingInfo = ingredientsDb[ingId];
+                    if (ingInfo) {
+                        mealCal += ingInfo.calories * qty;
+                        mealProt += ingInfo.protein * qty;
+                    }
+                }
+
+                // Header section
+                let cardHtml = `
+                    <div class="meal-builder-card">
+                        <div class="meal-builder-header">
+                            <span class="meal-builder-title">${category}</span>
+                            <span class="meal-builder-subtotal">${mealCal} kcal | ${mealProt}g Protein</span>
+                        </div>
+                        <div class="meal-ingredients-grid">
+                `;
+
+                // Render available items
+                allowedIngredients.forEach(ingId => {
+                    const ing = ingredientsDb[ingId];
+                    const qty = activeSelections[ingId] || 0.0;
+                    
+                    const rowCal = ing.calories * qty;
+                    const rowProt = ing.protein * qty;
+                    const previewText = qty > 0 ? `${rowCal} kcal | ${rowProt}g P` : '0 kcal | 0g P';
+                    
+                    cardHtml += `
+                        <div class="ingredient-adjuster-row">
+                            <div class="ing-label-container">
+                                <span class="ing-name">${ing.name}</span>
+                                <span class="ing-sub">Unit: ${ing.unit}</span>
+                            </div>
+                            <div class="ing-controls">
+                                <span class="ing-macro-preview">${previewText}</span>
+                                <button class="btn-qty" onclick="adjustQty('${category}', '${ingId}', 'dec')">-</button>
+                                <span class="qty-val">${qty}</span>
+                                <button class="btn-qty" onclick="adjustQty('${category}', '${ingId}', 'inc')">+</button>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                cardHtml += `
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += cardHtml;
+            }
+        }
+
+        // Render exercise list based on split tab selection
+        function renderExerciseList() {
+            const exerciseContainer = document.getElementById('exercise-list-body');
+            exerciseContainer.innerHTML = '';
+            
+            const activeDay = userState.active_day;
+            const completedList = userState.weekly_data[activeDay].completed_exercises;
+            
+            const routine = exercisesDb[activeTab];
+            
+            routine.exercises.forEach(ex => {
+                const isCompleted = completedList.includes(ex.id);
+                const completedClass = isCompleted ? 'completed' : '';
+                const checkedAttr = isCompleted ? 'checked' : '';
+                
+                const div = document.createElement('div');
+                div.className = `exercise-item ${completedClass}`;
+                div.id = `exercise-item-${ex.id}`;
+                
+                div.innerHTML = `
+                    <div class="exercise-info">
+                        <span class="exercise-name">${ex.name}</span>
+                        <div class="exercise-meta">
+                            <span class="exercise-muscle-tag">${ex.muscle_group}</span>
+                            <span>&bull;</span>
+                            <span>${ex.sets_reps}</span>
+                            <span>&bull;</span>
+                            <span class="exercise-burn">+${ex.calories_burned} kcal</span>
+                        </div>
+                    </div>
+                    <div class="checkbox-wrapper">
+                        <input type="checkbox" 
+                               class="exercise-checkbox" 
+                               id="chk-${ex.id}" 
+                               ${checkedAttr}
+                               onchange="handleExerciseToggle('${ex.id}', this)">
+                    </div>
+                `;
+                exerciseContainer.appendChild(div);
+            });
+        }
+
+        // Initialize state engine components on boot
+        window.addEventListener('DOMContentLoaded', () => {
+            // First sync to boot calculation averages
+            syncStateWithServer({}); 
+        });
+    </script>
+</body>
+</html>
