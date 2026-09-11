@@ -1,0 +1,36 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Helper function to check if the user is authenticated and is the owner
+    function isOwner(userId) {
+      return request.auth != null && request.auth.uid == userId;
+    }
+
+    // User Profile Document
+    match /users/{userId} {
+      allow read, write: if isOwner(userId);
+      
+      // User Weight Tracking Subcollection
+      match /weights/{weightId} {
+        allow read, write: if isOwner(userId);
+      }
+      
+      // User Workout Sessions Subcollection
+      match /sessions/{sessionId} {
+        allow read, write: if isOwner(userId);
+      }
+      
+      // User Custom Routines Subcollection
+      match /custom_routines/{routineId} {
+        allow read, write: if isOwner(userId);
+      }
+    }
+
+    // Public / Shared Exercise Master Catalog
+    match /exercises/{exerciseId} {
+      allow read: if true; // Any authenticated or guest user can read the exercise catalog
+      allow write: if false; // Only admin backend can alter master exercises
+    }
+  }
+}
